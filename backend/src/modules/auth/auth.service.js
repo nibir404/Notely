@@ -3,7 +3,14 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../../core/config/env");
 
-const registerUser = async (name,email, password) => {
+/**
+ * Registers a new user with a hashed password.
+ * @param {string} name - The user's full name.
+ * @param {string} email - The user's unique email address.
+ * @param {string} password - The plain-text password to be hashed.
+ * @returns {Promise<Object>} The created user document.
+ */
+const registerUser = async (name, email, password) => {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
         throw new Error("User already exists");
@@ -13,6 +20,12 @@ const registerUser = async (name,email, password) => {
     return user;
 }
 
+/**
+ * Authenticates a user and generates a JWT.
+ * @param {string} email - The user's email address.
+ * @param {string} password - The user's plain-text password.
+ * @returns {Promise<Object>} An object containing the user document and the JWT token.
+ */
 const loginUser = async (email, password) => {
     const user = await User.findOne({ email });
     if (!user) {

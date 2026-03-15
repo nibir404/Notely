@@ -2,8 +2,6 @@ const noteService = require("./notes.service");
 
 /**
  * Endpoint handler for creating a new note.
- * Expects title, content, workspace, and project in request body.
- * Owner is automatically set from the authenticated user.
  */
 const createNote = async (req, res) => {
     try {
@@ -17,13 +15,20 @@ const createNote = async (req, res) => {
 }
 
 /**
- * Endpoint handler for fetching all notes.
- * Supports filtering by workspace and project via query parameters.
+ * Endpoint handler for fetching notes.
+ * If a project ID is provided, it uses paginated project note fetching.
+ * Otherwise, it returns notes based on user ownership.
  */
 const getAllNotes = async (req, res) => {
     try {
-        const { workspace, project } = req.query;
+        const { workspace, project, cursor, limit } = req.query;
         const owner = req.user.id;
+
+        if (project) {
+            const notes = await noteService.getProjectNotes(project, parseInt(cursor) || 0, parseInt(limit) || 20, owner);
+            return res.status(200).json(notes);
+        }
+
         const notes = await noteService.getAllNotes(workspace, project, owner);
         res.status(200).json(notes);
     } catch (error) {
@@ -46,7 +51,6 @@ const getNoteById = async (req, res) => {
 
 /**
  * Endpoint handler for updating a note.
- * Maintains ownership by overriding the owner field with authenticated user ID.
  */
 const updateNote = async (req, res) => {
     try {

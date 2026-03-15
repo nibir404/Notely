@@ -1,4 +1,5 @@
 const noteModel = require("./notes.model");
+const analyzeNote = require("../../jobs/analyzeNote.job");
 
 /**
  * Creates a new note in the database.
@@ -10,7 +11,9 @@ const noteModel = require("./notes.model");
  * @returns {Promise<Object>} The created note document.
  */
 const createNote = async (title, content, workspace, project, owner) => {
-    return await noteModel.create({ title, content, workspace, project, owner });
+    const note = await noteModel.create({ title, content, workspace, project, owner });
+    await analyzeNote(note._id, content);
+    return note;
 }
 
 /**
@@ -21,7 +24,7 @@ const createNote = async (title, content, workspace, project, owner) => {
  * @returns {Promise<Array>} List of notes.
  */
 const getAllNotes = async (workspace, project, owner) => {
-    return await noteModel.find({ workspace, project, owner });
+    return await noteModel.find({ workspace, project, owner }).populate("owner", "name email");
 }
 
 /**
@@ -40,7 +43,9 @@ const getNoteById = async (id) => {
  * @returns {Promise<Object>} The updated note document.
  */
 const updateNote = async (id, note) => {
-    return await noteModel.findByIdAndUpdate(id, note, { new: true });
+    const updatedNote = await noteModel.findByIdAndUpdate(id, note, { new: true });
+    await analyzeNote(id, note.content);
+    return updatedNote;
 }
 
 /**
@@ -52,10 +57,23 @@ const deleteNote = async (id) => {
     return await noteModel.findByIdAndDelete(id);
 }
 
+/**
+ * Retrieves paginated notes for a specific project.
+ * @param {string} projectId - The project ID.
+ * @param {number} cursor - The number of records to skip.
+ * @param {number} [limit=20] - Maximum records to return.
+ * @param {string} owner - The ID of the user.
+ * @returns {Promise<Array>} List of project-specific notes.
+ */
+const getProjectNotes = async (projectId, cursor, limit = 20, owner) => {
+    return await noteModel.find({ project: projectId, owner }).sort({ createdAt: -1 }).skip(cursor).limit(limit);
+}
+
 module.exports = {
     createNote,
     getAllNotes,
     getNoteById,
     updateNote,
-    deleteNote
+    deleteNote,
+    getProjectNotes
 };

@@ -26,4 +26,6 @@ const noteSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
+noteSchema.index({project: 1, workspace: 1, owner: 1});
+
 module.exports = mongoose.model("Note", noteSchema);

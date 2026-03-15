@@ -1,100 +1,93 @@
 # Notely 📝
 
-Notely is a modern, high-performance note-taking and workspace management application. It allows users to organize their thoughts, projects, and tasks into secure, dedicated workspaces.
+Notely is a modern, high-performance note-taking and workspace management application. It focuses on helping teams and individuals organize complex projects with AI-powered insights.
 
-## 🚀 Features
+## 🚀 Key Features
 
-- **User Authentication**: Secure signup and login using JWT (JSON Web Tokens) and bcrypt hashing.
-- **Workspace Management**: Create, view, update, and delete workspaces to stay organized.
-- **Project Structure**: Projects live inside workspaces for better categorization.
-- **Protected Routes**: Secure API endpoints guarded by custom authentication middleware.
-- **Modular Architecture**: Feature-based organization (Auth, Workspace, Project).
-
-## 🛠️ Tech Stack
-
-- **Backend**: Node.js, Express.js
-- **Database**: MongoDB (Mongoose ODM)
-- **Security**: JWT, bcryptjs
-- **Frontend**: (In Development)
+- **User Authentication**: Secure JWT-based registration and login system.
+- **Workspace Management**: Organize your work into distinct, isolated workspaces.
+- **Project Structure**: Nested projects within workspaces for deep organization.
+- **Rich Notes**: Create and manage detailed notes with project context.
+- **AI-Powered Insights**: Automated analysis of note content to identify:
+  - Sentiment Trends
+  - Pain Points
+  - Feature Requests
+  - Suggested Solutions
+- **Asynchronous Processing**: Background job handling using **BullMQ** and **Redis** for non-blocking AI analysis.
+- **Modular Backend**: Clean, feature-based architecture for high scalability.
 
 ## 📁 Project Structure
 
 ```text
 Notely/
-├── .agent/                 # Custom AI agents and workflows
-│   └── workflows/          # Automation scripts (test-module, auto-comment)
-├── backend/                # Server-side application
+├── .agent/                 # AI Agency configurations & automation workflows
+├── backend/                # Primary Node.js/Express server
 │   ├── src/
-│   │   ├── core/           # Shared core logic
-│   │   │   ├── config/     # Database and Env configurations
-│   │   │   ├── middleware/ # Auth & Request logging middleware
-│   │   │   └── utils/      # Shared utilities (logger, helpers)
-│   │   ├── modules/        # Feature-based business logic
-│   │   │   ├── auth/       # User Authentication & JWT
-│   │   │   ├── workspace/  # Workspace Management
-│   │   │   │   ├── workspace.model.js
-│   │   │   │   ├── workspace.service.js
-│   │   │   │   ├── workspace.controller.js
-│   │   │   │   └── workspace.routes.js
-│   │   │   ├── project/    # Project Management
-│   │   │   │   ├── project.model.js
-│   │   │   │   ├── project.service.js
-│   │   │   │   ├── project.controller.js
-│   │   │   │   └── project.routes.js
-│   │   │   └── notes/      # Note-Taking (Rich Content)
-│   │   │       ├── notes.model.js
-│   │   │       ├── notes.service.js
-│   │   │       ├── notes.controller.js
-│   │   │       └── notes.routes.js
-│   │   └── server.js       # Main App Entry Point
-│   ├── .env                # Environment keys (Private)
-│   └── package.json        # Dependencies and Scripts
-├── frontend/               # Client-side (Coming Soon)
-├── .gitignore              # Files to exclude from version control
-└── README.md               # Project documentation
+│   │   ├── core/           # Universal application core
+│   │   │   ├── config/     # Database, Redis, and ENV setup
+│   │   │   ├── middleware/ # Auth guard & request logic
+│   │   │   └── utils/      # Cross-module helpers
+│   │   ├── modules/        # Feature-driven business logic
+│   │   │   ├── auth/       # Security & Identity
+│   │   │   ├── workspace/  # Organization containers
+│   │   │   ├── project/    # Thematic project groups
+│   │   │   ├── notes/      # Content management & analysis trigger
+│   │   │   └── insight/    # AI Result storage & retrieval
+│   │   ├── queues/         # BullMQ queue definitions (e.g., ai-analysis)
+│   │   ├── workers/        # Dedicated job processors (Background Workers)
+│   │   ├── jobs/           # Job dispatchers (Event-driven analysis)
+│   │   └── server.js       # Application entry point
+│   ├── .env                # Secret configurations
+│   └── package.json        # Dependencies (Express, Mongoose, BullMQ, ioredis)
+└── README.md               # System Documentation
 ```
 
-## ⚙️ Getting Started
+## 🛠️ Technology Stack
 
-### Prerequisites
+- **Runtime**: [Node.js](https://nodejs.org/)
+- **Framework**: [Express.js](https://expressjs.com/)
+- **Database**: [MongoDB](https://www.mongodb.com/) (ODM: Mongoose)
+- **Caching/Queue**: [Redis](https://redis.io/)
+- **Task Queue**: [BullMQ](https://docs.bullmq.io/)
+- **Authentication**: JSON Web Tokens (JWT) & Bcrypt
 
-- [Node.js](https://nodejs.org/) (v16+ recommended)
-- [MongoDB](https://www.mongodb.com/) account or local instance
+## ⚙️ Development Setup
 
-### Installation
+### 1. Requirements
 
-1. **Clone the repository**:
-   ```bash
-   git clone <repository-url>
-   cd Notely
-   ```
+- Node.js (v18+)
+- MongoDB
+- Redis Server (Running locally or via Docker)
 
-2. **Setup the Backend**:
-   ```bash
-   cd backend
-   npm install
-   ```
+### 2. Environment Configuration
 
-3. **Environment Variables**:
-   Create a `.env` file in the `backend/` directory with the following:
-   ```env
-   PORT=5001
-   MONGO_URI=your_mongodb_connection_string
-   JWT_SECRET=your_super_secret_key
-   ```
+Create a `.env` file in the `/backend` folder:
 
-4. **Run the application**:
-   ```bash
-   npm run dev
-   ```
+```env
+PORT=5001
+MONGO_URI=mongodb://localhost:27017/notely
+JWT_SECRET=your_secret_key
+REDIS_HOST=127.0.0.1
+REDIS_PORT=6379
+```
 
-## 🧪 API Testing
+### 3. Installation & Boot
 
-You can use the built-in **test-module** workflow or a REST client (like Thunder Client or Postman) to test the following:
-- **Auth**: `/api/auth/register`, `/api/auth/login`
-- **Workspace**: `/api/workspace` (Protected)
-- **Project**: `/api/project` (Protected)
+```bash
+cd backend
+npm install
+npm run dev
+```
 
-## 🛡️ License
+## 🧠 Background Processing
 
-This project is licensed under the MIT License.
+The AI analysis is decoupled from the main request flow. When a note is created:
+
+1.  A job is added to the `ai-analysis` queue.
+2.  An **AI Worker** picks up the job asynchronously.
+3.  Simulated AI logic extracts insights.
+4.  Results are stored in the `Insights` collection.
+
+---
+
+_Created with ❤️_
