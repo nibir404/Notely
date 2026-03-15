@@ -6,9 +6,9 @@ Notely is a modern, high-performance note-taking and workspace management applic
 
 - **User Authentication**: Secure signup and login using JWT (JSON Web Tokens) and bcrypt hashing.
 - **Workspace Management**: Create, view, update, and delete workspaces to stay organized.
-- **Note-Taking** (Coming Soon): Feature-rich note management within each workspace.
+- **Project Structure**: Projects live inside workspaces for better categorization.
 - **Protected Routes**: Secure API endpoints guarded by custom authentication middleware.
-- **RESTful API**: Clean and well-documented API structure.
+- **Modular Architecture**: Feature-based organization (Auth, Workspace, Project).
 
 ## 🛠️ Tech Stack
 
@@ -22,7 +22,7 @@ Notely is a modern, high-performance note-taking and workspace management applic
 ```text
 Notely/
 ├── .agent/                 # Custom AI agents and workflows
-│   └── workflows/          # Automation scripts (e.g., test-module)
+│   └── workflows/          # Automation scripts (test-module, auto-comment)
 ├── backend/                # Server-side application
 │   ├── src/
 │   │   ├── core/           # Shared core logic
@@ -30,12 +30,17 @@ Notely/
 │   │   │   ├── middleware/ # Auth & Request logging middleware
 │   │   │   └── utils/      # Shared utilities (logger, helpers)
 │   │   ├── modules/        # Feature-based business logic
-│   │   │   ├── auth/       # User Auth (Register, Login)
-│   │   │   └── workspace/  # Workspace CRUD operations
-│   │   │       ├── workspace.model.js      # DB Schema
-│   │   │       ├── workspace.service.js    # Data Access Logic
-│   │   │       ├── workspace.controller.js # Request Handlers
-│   │   │       └── workspace.routes.js     # API Route Definitions
+│   │   │   ├── auth/       # User Authentication & JWT
+│   │   │   ├── workspace/  # Workspace Management
+│   │   │   │   ├── workspace.model.js
+│   │   │   │   ├── workspace.service.js
+│   │   │   │   ├── workspace.controller.js
+│   │   │   │   └── workspace.routes.js
+│   │   │   └── project/    # Project Management
+│   │   │       ├── project.model.js
+│   │   │       ├── project.service.js
+│   │   │       ├── project.controller.js
+│   │   │       └── project.routes.js
 │   │   └── server.js       # Main App Entry Point
 │   ├── .env                # Environment keys (Private)
 │   └── package.json        # Dependencies and Scripts
@@ -80,10 +85,10 @@ Notely/
 
 ## 🧪 API Testing
 
-You can test the authentication and workspace endpoints using the provided workflow:
-1. Use the **REST Client** extension in VS Code.
-2. Run the registration and login tests.
-3. Use the generated token for workspace CRUD operations.
+You can use the built-in **test-module** workflow or a REST client (like Thunder Client or Postman) to test the following:
+- **Auth**: `/api/auth/register`, `/api/auth/login`
+- **Workspace**: `/api/workspace` (Protected)
+- **Project**: `/api/project` (Protected)
 
 ## 🛡️ License
 
