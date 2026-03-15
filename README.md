@@ -7,17 +7,21 @@ Notely is a professional-grade, high-performance note-taking and workspace manag
 ## 🚀 Key Features
 
 ### 👤 Identity & Security
+
 - **JWT Authentication**: Industry-standard stateless authentication.
 - **Bcrypt Hashing**: Multi-pass secure password storage.
 - **Route Protection**: Granular middleware-based access control.
 
 ### 🏢 Organization Logic
+
 - **Workspaces**: High-level containers for different domains of your life (e.g., "Work", "Personal").
 - **Projects**: Sub-containers within workspaces to group related notes and tasks.
 - **Deep Nesting**: Clean hierarchical structure: `User -> Workspace -> Project -> Note`.
 
 ### 🧠 AI Intelligence (Asynchronous)
+
 Each note you save is automatically analyzed by our background intelligence layer to extract:
+
 - **Sentiment Analysis**: Detecting user mood and feedback tone.
 - **Pain Point Identification**: Finding friction in user descriptions.
 - **Feature Requests**: Distilling "wants" from natural language.
@@ -98,42 +102,50 @@ Notely/
 ## 📖 API Documentation
 
 ### Authentication
-| Endpoint | Method | Description | Auth Required |
-| :--- | :--- | :--- | :--- |
-| `/api/auth/register` | `POST` | Create a new account | No |
-| `/api/auth/login` | `POST` | Authenticate and receive JWT | No |
+
+| Endpoint             | Method | Description                  | Auth Required |
+| :------------------- | :----- | :--------------------------- | :------------ |
+| `/api/auth/register` | `POST` | Create a new account         | No            |
+| `/api/auth/login`    | `POST` | Authenticate and receive JWT | No            |
 
 ### Workspaces
-| Endpoint | Method | Description | Auth Required |
-| :--- | :--- | :--- | :--- |
-| `/api/workspace` | `POST` | Create a new workspace | Yes |
-| `/api/workspace` | `GET` | List all user workspaces | Yes |
-| `/api/workspace/:id`| `DELETE` | Remove a workspace | Yes |
+
+| Endpoint             | Method   | Description              | Auth Required |
+| :------------------- | :------- | :----------------------- | :------------ |
+| `/api/workspace`     | `POST`   | Create a new workspace   | Yes           |
+| `/api/workspace`     | `GET`    | List all user workspaces | Yes           |
+| `/api/workspace/:id` | `DELETE` | Remove a workspace       | Yes           |
 
 ### Projects
-| Endpoint | Method | Description | Auth Required |
-| :--- | :--- | :--- | :--- |
-| `/api/project` | `POST` | Create project under Workspace | Yes |
-| `/api/project` | `GET` | Filter projects by Workspace | Yes |
+
+| Endpoint       | Method | Description                    | Auth Required |
+| :------------- | :----- | :----------------------------- | :------------ |
+| `/api/project` | `POST` | Create project under Workspace | Yes           |
+| `/api/project` | `GET`  | Filter projects by Workspace   | Yes           |
 
 ### Notes & Insights
-| Endpoint | Method | Description | Auth Required |
-| :--- | :--- | :--- | :--- |
-| `/api/note` | `POST` | Create Note (Triggers AI) | Yes |
-| `/api/note` | `GET` | Paginated fetching (Cursor-based) | Yes |
-| `/api/insight` | `GET` | View AI-generated findings | Yes |
+
+| Endpoint       | Method | Description                       | Auth Required |
+| :------------- | :----- | :-------------------------------- | :------------ |
+| `/api/note`    | `POST` | Create Note (Triggers AI)         | Yes           |
+| `/api/note`    | `GET`  | Paginated fetching (Cursor-based) | Yes           |
+| `/api/insight` | `GET`  | View AI-generated findings        | Yes           |
 
 ---
 
 ## ⚙️ Development Setup
 
 ### 1. Prerequisites
+
 Ensure you have **MongoDB** and **Redis** running.
+
 - **Redis Utility**: `redis-server` (Standard port 6379)
 - **DB Utility**: `mongod`
 
 ### 2. Environment Variables
+
 Create `/backend/.env`:
+
 ```bash
 PORT=5001
 MONGO_URI=mongodb://localhost:27017/notely
@@ -143,6 +155,7 @@ REDIS_PORT=6379
 ```
 
 ### 3. Boot Commands
+
 ```bash
 npm install
 npm run dev
@@ -154,10 +167,12 @@ npm run dev
 
 **Redis Connection Refused**:
 If you see `ECONNREFUSED` in the console, it means the background workers cannot connect to Redis.
+
 - **Solution**: Run `redis-server` in a separate terminal. Note that the application will still handle API requests, but AI Insights will be paused until Redis is connected.
 
 **Note Creation Fails**:
 Ensure you are passing a valid `workspace` and `project` ObjectID in the request body.
 
 ---
-_Created with ❤️ and Antigravity AI_
+
+_Created for learning_
