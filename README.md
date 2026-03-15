@@ -36,11 +36,16 @@ Notely/
 │   │   │   │   ├── workspace.service.js
 │   │   │   │   ├── workspace.controller.js
 │   │   │   │   └── workspace.routes.js
-│   │   │   └── project/    # Project Management
-│   │   │       ├── project.model.js
-│   │   │       ├── project.service.js
-│   │   │       ├── project.controller.js
-│   │   │       └── project.routes.js
+│   │   │   ├── project/    # Project Management
+│   │   │   │   ├── project.model.js
+│   │   │   │   ├── project.service.js
+│   │   │   │   ├── project.controller.js
+│   │   │   │   └── project.routes.js
+│   │   │   └── notes/      # Note-Taking (Rich Content)
+│   │   │       ├── notes.model.js
+│   │   │       ├── notes.service.js
+│   │   │       ├── notes.controller.js
+│   │   │       └── notes.routes.js
 │   │   └── server.js       # Main App Entry Point
 │   ├── .env                # Environment keys (Private)
 │   └── package.json        # Dependencies and Scripts
