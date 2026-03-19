@@ -70,20 +70,27 @@ Notely/
 │   │   │   ├── project/        # Nested project management
 │   │   │   ├── notes/          # Note capture & triggering analysis jobs
 │   │   │   └── insight/        # AI Result retrieval & management
-│   │   │       ├── insight.model.js  # Schema for AI findings
-│   │   │       ├── insight.service.js # Business logic for insights
-│   │   │       ├── insight.controller.js # Request handlers
-│   │   │       └── insight.router.js # Endpoint definitions
 │   │   ├── queues/             # BullMQ Queue definitions
-│   │   │   └── ai.queue.js     # Definition of the "ai-analysis" queue
 │   │   ├── workers/            # Background CPU-heavy task processors
-│   │   │   └── ai.workers.js   # The worker picking up notes for analysis
 │   │   ├── jobs/               # Unit-of-work dispatchers
-│   │   │   └── analyzeNote.job.js # Logic to package data into a queue job
 │   │   └── server.js           # Express instance & route registration
 │   ├── tests/                  # Automated validation suites
 │   ├── .env                    # System secrets (Port, Mongo, JWT, Redis)
 │   └── package.json            # NPM configuration & dependencies
+├── frontend/                   # React Client Application
+│   ├── src/                    # Source Code
+│   │   ├── assets/             # Static assets (images, icons)
+│   │   ├── components/         # Reusable UI components (Common, Auth, Domain)
+│   │   ├── context/            # React Context providers (Auth)
+│   │   ├── hooks/              # Custom React hooks (Data fetching, Logic)
+│   │   ├── layouts/            # Page layout wrappers
+│   │   ├── pages/              # Route-level components
+│   │   ├── services/           # API communication layer (Axios)
+│   │   ├── store/              # Global state management (Zustand)
+│   │   ├── styles/             # Global CSS & Design tokens
+│   │   └── utils/              # Helper functions & Constants
+│   ├── package.json            # Frontend dependencies
+│   └── main.jsx                # Application entry point
 └── README.md                   # System Blueprint
 ```
 
@@ -91,11 +98,20 @@ Notely/
 
 ## 🛠️ Technology Stack
 
-- **Server-Side**: Node.js & Express.js (v18+)
+### Backend
+- **Core**: Node.js & Express.js (v18+)
 - **Database**: MongoDB (Mongoose Schema-driven)
 - **Background Engine**: BullMQ
 - **State/Queue Memory**: Redis
 - **Security**: jsonwebtoken, bcryptjs
+
+### Frontend
+- **Framework**: React.js
+- **Routing**: React Router v7
+- **Data Fetching**: TanStack Query (React Query) v5
+- **State Management**: Zustand
+- **HTTP Client**: Axios
+- **Styling**: Vanilla CSS
 
 ---
 
