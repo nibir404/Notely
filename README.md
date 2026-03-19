@@ -53,7 +53,7 @@ Below is a comprehensive map of the codebase to help you navigate the logic laye
 ```text
 Notely/
 ├── .agent/                     # AI Agency & Automation Layer
-│   └── workflows/              # Custom agent skills (test-module, auto-comment)
+│   └── workflows/              # Custom agent skills (test-module, auto-comment, push)
 ├── backend/                    # Core Server Application
 │   ├── src/                    # Source Code
 │   │   ├── core/               # Cross-cutting concerns & infrastructure
